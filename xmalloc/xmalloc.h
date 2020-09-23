@@ -5,7 +5,7 @@
 #include <stdlib.h>
 
 
-void *malloc_of_exit(size_t nbytes, const char *file, int line);
+void *malloc_or_exit(size_t nbytes, const char *file, int line);
 // Easy automatic usage of the function
 #define xmalloc(nbytes) malloc_or_exit((nbytes), __FILE__, __LINE__)
 
