@@ -55,3 +55,4 @@ CMakeCache.txt
 build/*
 *.zip
 CMakeFiles/
+*.swp
