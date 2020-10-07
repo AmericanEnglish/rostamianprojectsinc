@@ -3,14 +3,22 @@ cmake_minimum_required(VERSION 3.10)
 project(RostamianProjects)
 enable_language(C)
 set("CMAKE_C_COMPILER" "gcc")
+
+# Source directories
 set("XMALLOC" "${PROJECT_SOURCE_DIR}/xmalloc/")
-set("ARRAY" "${PROJECT_SOURCE_DIR}/array/")
 set("XMALLOCSRC" "${XMALLOC}/xmalloc.c")
-#target_include_directories("xmalloc/", "array/")
-include_directories("${PROJECT_SOURCE_DIR}/xmalloc/" "${PROJECT_SOURCE_DIR}/array/")
+
+set("ARRAY" "${PROJECT_SOURCE_DIR}/array/")
+
+set("VERTS" "${PROJECT_SOURCE_DIR}/vertices/")
+set("VERTSRC" "${VERTS}/rank-vertices.c")
+
+# Header directories
+include_directories("${XMALLOC}" "${ARRAY}" "${VERTS}")
 
 
+set("CMAKE_C_FLAGS" "-Wall -pedantic -std=c99 -O2")
 add_executable("xmalloc-demo-1" "${XMALLOC}/xmalloc-demo-1.c" "${XMALLOCSRC}")
 add_executable("xmalloc-demo-2" "${XMALLOC}/xmalloc-demo-2.c" "${XMALLOCSRC}")
 add_executable("hilbert_matrix" "${ARRAY}/hilbert_matrix.c" ${XMALLOCSRC})
-
+add_executable("rank-vertices-demo" "${VERTS}/rank-vertices-demo.c" )
