@@ -20,11 +20,11 @@
     if(a != NULL) {                                     \
         size_t  make_matrix_loop_counter;               \
         for(    make_matrix_loop_counter = 0;           \
-            (a)[make_matrix_loop_counter]=NULL;         \
+            (a)[make_matrix_loop_counter]!=NULL;         \
                 make_matrix_loop_counter++)             \
             free_vector((a)[make_matrix_loop_counter]); \
-            free_vector(a);                             \
-            a = NULL;                                   \
+        free_vector(a);                                 \
+        a = NULL;                                       \
     }                                                   \
 } while(0)
 

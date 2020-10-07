@@ -14,7 +14,7 @@ double **hilbert_matrix(int n) {
     return matrix;
 }
 
-int main(int argc, int *argv[]) {
+int main(int argc, char *argv[]) {
     int n = 8;
     double **H = hilbert_matrix(n);
     // Print?
