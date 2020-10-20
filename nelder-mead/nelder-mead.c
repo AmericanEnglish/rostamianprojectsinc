@@ -57,6 +57,9 @@ static inline void rank_vertices(double *y, int m, int *ia, int *iy, int *iz) {
 static inline void get_centroid(double **s, int n, int iz, double *C) {
     // Note that the matrix is composed of row vectors
     int col, row;
+    for (int col = 0; col < n ; col++) {
+        C[col] = 0;
+    }
     // We are skipping crow == iz, do the rows before iz
     for (row = 0; row < iz; row++) {
         for (col = 0; col < n; col++) {
@@ -120,10 +123,6 @@ static inline int done(double **s, int n, double *y, int ia, int iz, double err2
     // ||s[iz]-s[ia]||^2 <= err2
     // And also convert from absolute value to a full inequality
     // |y[iz]-y[ia]| <= err2 => -err2 <= y[iz]-y[ia] <= err2
-    /*printf("err2  = %24.16f\n", err2);*/
-    /*printf("norm2 = %24.16f\n", norm2);*/
-    /*printf("diff  = %24.16f\n", diff);*/
-    /*return (norm2 < err2) && ((diff <= err2));*/
     return (norm2 < err2) && ((-err2 <= diff) && (diff <= err2));
 }
 
@@ -159,7 +158,7 @@ int nelder_mead(struct nelder_mead *nm) {
                 }
             }
         }
-        print_matrix("%f ", s, n+1, n);
+        /*print_matrix("%f ", s, n+1, n);*/
     }
     for (row = 0; row < n+1; row++) {
         y[row] = nm->f(s[row], n, nm->params);
@@ -167,16 +166,17 @@ int nelder_mead(struct nelder_mead *nm) {
     fevalcount = n+1;
     while (fevalcount <= nm->maxevals) {
         rank_vertices(y, n+1, &ia, &iy, &iz);
-        /*printf("%d %d %d\n", ia, iy, iz);*/
         if (done(s, n, y, ia, iz, err2)) {
             nm->minval = y[ia];
             // copy best vertex into nm->x
-            nm->x = s[ia];
+            for (col = 0; col < n; col++) {
+                nm->x[col] = s[ia][col];
+            }
             break;
         }
         get_centroid(s, n, iz, C);
 
-        printf("C = "); print_vector("%24.16f ", C, n);
+        /*printf("C = "); print_vector("%24.16f ", C, n);*/
         /*printf("s = \n"); print_matrix("%24.16f ", s, n+1, n);*/
 
         transform(C, s[iz], n, -REFLECT, Pr);
@@ -184,7 +184,6 @@ int nelder_mead(struct nelder_mead *nm) {
         fevalcount++;
 
         if (yr < y[ia]) { // case 1
-            printf("CASE 1\n");
             transform(C, Pr, n, EXPAND, Pe);
             ye = nm->f(Pe, n, nm->params);
             fevalcount++;
@@ -198,21 +197,17 @@ int nelder_mead(struct nelder_mead *nm) {
             }
         }
         else if (yr < y[iy]) { // case 2
-            printf("CASE 2\n");
             replace_row(s, iz, &Pr);
-            y[iz] = yr;
+            y[iz] = yr; 
         }
         else { 
             if (yr < y[iz]) { //case 3
-                printf("CASE 3\n");
                 //  R = (1-b)P+bQ
                 transform(C, Pr, n, CONTRACT, Pc);
             // Could be an else, but for completion
             }
             else if (y[iz] <= yr) { // case 4
-                printf("CASE 4\n");
-                transform(C, s[iz], n, CONTRACT, Pc);
-                yr = y[iz]; // so that no further changes needed
+                transform(C, Pr, n, -CONTRACT, Pc);
             }
             yc = nm->f(Pc, n, nm->params);
             fevalcount++;
@@ -232,8 +227,13 @@ int nelder_mead(struct nelder_mead *nm) {
             }
         }
     }
-    print_matrix("%f ", s, n+1, n);
+    /*print_matrix("%f ", s, n+1, n);*/
     // Free all vectors
+    free_vector(y);
+    free_vector(Pr);
+    free_vector(Pe);
+    free_vector(Pc);
+    free_vector(C);
     if (simplex_to_be_freed) {
         free_matrix(s);
     }
