@@ -88,9 +88,9 @@ int main(void){
     };
     evalcount = nelder_mead(&NM3);
     printf("\n\nCase study 2, minimum at D2\n");
-    printf("Expected answer:   min = %13.10g at (%13.10g, %14.11g)\n",
+    printf("Expected answer:   min = %13.10g at (%13.10g, %13.10g)\n",
             -0.0055676481, 1.1554672673, 0.8776603419);
-    printf("Computed solution: min = %13.8g at (%13.10g, %14.11g)\n", NM3.minval, D2[0], D2[1]);
+    printf("Computed solution: min = %13.8g at (%13.10g, %13.10g)\n", NM3.minval, D2[0], D2[1]);
     printf("Converged after %d function evaluations\n", evalcount);
     return 0;
 }
