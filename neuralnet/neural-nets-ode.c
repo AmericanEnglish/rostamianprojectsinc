@@ -2,9 +2,11 @@
 #include <stdlib.h>
 #include <math.h>
 #include "xmalloc.h"
-#include "neural-net-ode.h"
+#include "neural-nets-ode.h"
 #include "nelder-mead.h"
 #include "array.h"
+
+#define M_E 2.7182818284590452353602874713527
 
 static void sigmoid(double x, double *sigma) {
     // sigmoid
@@ -61,9 +63,9 @@ void Neural_Net_eval(struct Neural_Net_ODE *nn, double x) {
 static double residual_at_x(struct Neural_Net_ODE *nn, double x) {
     Neural_Net_phi(nn, x);  // phi
     Neural_Net_eval(nn, x); // N
-    nn->ODE;           // ODE
+    /*nn->ODE;           // ODE*/
 
-    double R = 0.0;
+    /*double R = 0.0;*/
     // Get N
     Neural_Net_eval(nn, x);
     // Get Phi

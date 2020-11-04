@@ -20,7 +20,7 @@ struct Neural_Net_ODE {
 
 void Neural_Net_init(struct Neural_Net_ODE *nn);
 void Neural_Net_end(struct Neural_Net_ODE *nn);
-void Neural_Net_eval(struct Neural_Net_ODE *nn);
+void Neural_Net_eval(struct Neural_Net_ODE *nn, double x);
 void Neural_Net_phi(struct Neural_Net_ODE *nn, double x);
 void Neural_Net_plot_with_maple(struct Neural_Net_ODE *nn, int n, char *outfile);
 void Neural_Net_plot_with_matlab(struct Neural_Net_ODE *nn, int n, char *outfile);

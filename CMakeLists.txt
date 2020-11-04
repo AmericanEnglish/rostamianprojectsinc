@@ -17,11 +17,15 @@ set("NMEAD" "${PROJECT_SOURCE_DIR}/nelder-mead/")
 set("NMEADSRC" "${NMEAD}/nelder-mead.c")
 
 set("NN" "${PROJECT_SOURCE_DIR}/neuralnet/")
-set("NNSRC" "${NN}/neural-net-ode.c")
+set("NNSRC" "${NN}/neural-nets-ode.c")
+
+# The source for these files can be seen here:
+# https://userpages.umbc.edu/~rostamia/cbook/neural-nets-odes.html
+set("ROSTPLOTSRC" "${NN}/plot-with-matlab.c" "${NN}/plot-with-maple.c")
 
 set("DEMO2DSRC" "${NMEADSRC}" "${XMALLOCSRC}")
 set("DEMOENSRC" "${NMEADSRC}" "${XMALLOCSRC}")
-set("DEMOODESRC" "${NNSRC}" "${XMALLOCSRC}" "${NMEADSRC}")
+set("DEMOODESRC" "${NNSRC}" "${XMALLOCSRC}" "${NMEADSRC}" "${ROSTPLOTSRC}")
 
 # Header directories
 include_directories("${XMALLOC}" "${ARRAY}" "${VERTS}" "${NMEAD}" "${NN}")

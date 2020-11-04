@@ -2,7 +2,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "xmalloc.h"
-#include "neural-net-ode.h"
+#include "nelder-mead.h"
+#include "neural-nets-ode.h"
 #include "array.h"
 #define PI 4.0*atan(1.0)
 
