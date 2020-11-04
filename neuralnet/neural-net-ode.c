@@ -92,11 +92,13 @@ double Neural_Net_error_vs_exact(struct  Neural_Net_ODE *nn, int n) {
     // 
     double m = 0;
     double d = 0;
+    double x;
     for (int i = 0; i < n; i++) {
-        Neural_Net_eval(nn, nn->x[i]);
-        Neural_Net_phi(nn, nn->x[i]);
+        x = nn->training_points[i]
+        Neural_Net_eval(nn, x);
+        Neural_Net_phi(nn, x);
         // Phi(x_i) * N(x_i) - u(x_i)
-        d = n->phi[0] * n->N[0] - nn->exact_sol[i];
+        d = n->phi[0] * n->N[0] - nn->exact_sol(x);
         d = abs(d);
         if (m > d) {
             m = d;

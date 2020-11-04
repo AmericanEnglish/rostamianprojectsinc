@@ -5,16 +5,22 @@
 #define PI 4.0*atan(1.0)
 
 static double exact_sol(double x) {
-    // tbd
+    return sin(x)+sin(2*x);
 }
+
 static double my_ode(double x, double u, double u_x, double u_xx) {
     double t = sin(x) + sin(2*x);
     double f = -sin(x) - 4*sin(2*x) + 1/(1+t*t);
     return u_xx + 1/(1+u*u) - f;
 }
-static void show_usage(char *pragname) {
-    // tbd
+
+static void show_usage(char *progname) {
+    printf("Usage:\n");
+    printf("%s q nu\n", progname);
+    printf("q   : number of units in the hidden layer (q >= 1)\n");
+    printf("nu  : number of training points (nu >= 1)\n");
 }
+
 int main(int argc, char **argv) {
     double a = 0;  // left end of the interval
     double b = PI; // right end of the interval
