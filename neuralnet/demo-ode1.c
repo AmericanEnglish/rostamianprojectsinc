@@ -80,13 +80,11 @@ int main(int argc, char **argv) {
 
     int evalcount = nelder_mead(&NM); // training: minimize the residual
     if (evalcount > NM.maxevals) {
-        printf("Nelder-Mead: No convergence after %d "
-                "function evaluation\n", evalcount);
+        printf("Nelder-Mead: No convergence after %d function evaluation\n", evalcount);
         return EXIT_FAILURE;
     }
     else {
-        printf("Nelder-Mead: Converged after %d"
-                "function evaluations\n", evalcount);
+        printf("Nelder-Mead: Converged after %d function evaluations\n", evalcount);
         printf("Nelder-Mead: Neural network's residual err = %g\n",
                 NM.minval);
     }
