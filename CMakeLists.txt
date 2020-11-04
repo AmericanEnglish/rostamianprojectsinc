@@ -21,6 +21,16 @@ set("NNSRC" "${NN}/neural-nets-ode.c")
 
 # The source for these files can be seen here:
 # https://userpages.umbc.edu/~rostamia/cbook/neural-nets-odes.html
+# We will download these right here for completion.
+if (NOT EXISTS "${NN}/plot-with-maple.c")
+    file(DOWNLOAD "https://userpages.umbc.edu/~rostamia/cbook/neural-nets-odes/plot-with-maple.c" "${NN}/plot-with-maple.c" 
+        SHOW_PROGRESS) 
+endif()
+
+if (NOT EXISTS "${NN}/plot-with-matlab.c")
+    file(DOWNLOAD "https://userpages.umbc.edu/~rostamia/cbook/neural-nets-odes/plot-with-matlab.c" "${NN}/plot-with-matlab.c" 
+        SHOW_PROGRESS) 
+endif()
 set("ROSTPLOTSRC" "${NN}/plot-with-matlab.c" "${NN}/plot-with-maple.c")
 
 set("DEMO2DSRC" "${NMEADSRC}" "${XMALLOCSRC}")
@@ -29,6 +39,7 @@ set("DEMOODESRC" "${NNSRC}" "${XMALLOCSRC}" "${NMEADSRC}" "${ROSTPLOTSRC}")
 
 # Header directories
 include_directories("${XMALLOC}" "${ARRAY}" "${VERTS}" "${NMEAD}" "${NN}")
+
 
 set("CMAKE_C_FLAGS" "-Wall -pedantic -std=c99 -O2")
 add_executable("xmalloc-demo-1" "${XMALLOC}/xmalloc-demo-1.c" "${XMALLOCSRC}")
