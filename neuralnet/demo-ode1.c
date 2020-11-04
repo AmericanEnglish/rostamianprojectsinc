@@ -98,8 +98,10 @@ int main(int argc, char **argv) {
         printf("Error versus the ODE's exact solution = %g\n",
                 Neural_Net_error_vs_exact(&nn, 50));
     }
-    Neural_Net_plot_with_maple(&nn, 50, "/tmp/zz.mpl");
-    Neural_Net_plot_with_matlab(&nn, 50, "/tmp/zz.mpl");
+    Neural_Net_plot_with_maple(&nn, 50, "./zz.mpl");
+    /*Neural_Net_plot_with_maple(&nn, 50, "/tmp/zz.mpl");*/
+    Neural_Net_plot_with_matlab(&nn, 50, "./zz.m");
+    /*Neural_Net_plot_with_matlab(&nn, 50, "/tmp/zz.m");*/
 
     Neural_Net_end(&nn); // end neural network
 
