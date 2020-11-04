@@ -32,7 +32,7 @@ void Neural_Net_init(struct Neural_Net_ODE *nn) {
     nn->nweights = 3*nn->q;
     make_vector(nn->weights, nn->nweights);
     for (int i = 0; i < nn->nweights; i++) {
-        nn->weights[i] = (double)rand()/RAND_MAX - 0.5;
+        nn->weights[i] = ((double)rand())/RAND_MAX - 0.5;
     }
 }
 
@@ -99,18 +99,20 @@ double Neural_Net_error_vs_exact(struct  Neural_Net_ODE *nn, int n) {
     double m = 0;
     double d = 0;
     double x;
+    double h = (nn->b-nn->a)/n;
     for (int i = 0; i < n; i++) {
-        x = nn->training_points[i];
+        x = nn->a+i*h;
         Neural_Net_eval(nn, x);
         Neural_Net_phi(nn, x);
         // Phi(x_i) * N(x_i) - u(x_i)
-        printf("%03d: x =       %5.3f", i, x); 
-        printf("\n exact_sol(x): %5.3f ", nn->exact_sol(x));
-        printf("\n phi(x)        %5.3f", nn->phi[0]);
-        printf("\n N(x)          %5.3f", nn->N[0]);
+        // printf("%03d: x =       %5.3f", i, x); 
+        // printf("\n exact_sol(x): %5.3f ", nn->exact_sol(x));
+        // printf("\n phi(x)        %5.3f", nn->phi[0]);
+        // printf("\n N(x)          %5.3f", nn->N[0]);
+        // printf("\n Phi(x)*N(x)   %5.3f", nn->phi[0]*nn->N[0]);
         d = nn->phi[0] * nn->N[0] - nn->exact_sol(x);
-        d = abs(d);
-        printf("\n maxabs        %5.3f\n\n", d);
+        d = fabs(d);
+        // printf("\n maxabs        %5.3f\n\n", d);
         if (m < d) {
             m = d;
         }
