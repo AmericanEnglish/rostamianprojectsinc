@@ -16,7 +16,7 @@ static void sigmoid(double x, double *sigma) {
         - sigma[1];
 }
 
-static void Neural_Net_phi(struct Neural_Net_ODE *nn, double x) {
+void Neural_Net_phi(struct Neural_Net_ODE *nn, double x) {
     // phi -- expanded form
     nn->phi[0] = -x*x+x*(nn->a+nn->b)-nn->a*nn->b;
     // phi'
@@ -25,10 +25,10 @@ static void Neural_Net_phi(struct Neural_Net_ODE *nn, double x) {
     nn->phi[2] = -2;
 }
 
-static void Neural_Net_init(struct Neural_Net_ODE *nn) {
+void Neural_Net_init(struct Neural_Net_ODE *nn) {
     nn->nweights = 3*nn->q;
     make_vector(nn->weights, nn->nweights);
-    for (i = 0; i < n->nweights; i++) {
+    for (int i = 0; i < nn->nweights; i++) {
         nn->weights[i] = (double)rand()/RAND_MAX - 0.5;
     }
 }
@@ -36,11 +36,11 @@ static void Neural_Net_init(struct Neural_Net_ODE *nn) {
 void Neural_Net_end(struct Neural_Net_ODE *nn) {
     // Free allocated memory
     // free_vector(nn->training_points);
-    free_vectors(nn->weights);
+    free_vector(nn->weights);
 }
 
-void Neural_Net_eval(struct Neural_net_ODE *nn, double x) {
-    int q = nn->q;
+void Neural_Net_eval(struct Neural_Net_ODE *nn, double x) {
+    int q     = nn->q;
     double *u = nn->weights;
     double *v = nn->weights +   q;
     double *w = nn->weights + 2*q;
@@ -59,8 +59,8 @@ void Neural_Net_eval(struct Neural_net_ODE *nn, double x) {
 }
 
 static double residual_at_x(struct Neural_Net_ODE *nn, double x) {
-    Neural_Net_phi();  // phi
-    Neural_Net_eval(); // N
+    Neural_Net_phi(nn, x);  // phi
+    Neural_Net_eval(nn, x); // N
     nn->ODE;           // ODE
 
     double R = 0.0;
@@ -70,8 +70,8 @@ static double residual_at_x(struct Neural_Net_ODE *nn, double x) {
     Neural_Net_phi(nn, x);
     return nn->ODE(x,                   
         nn->phi[0]*nn->N[0], 
-        nn->phi[1]*nn->N[0] + nn->phi[0]*nn->N[1],
-        nn->phi[2]*nn->N[0] + 2*nn->phi[1]*nn->N[1] + phi[0]*N[2]
+        nn->phi[1]*nn->N[0] +   nn->phi[0]*nn->N[1],
+        nn->phi[2]*nn->N[0] + 2*nn->phi[1]*nn->N[1] + nn->phi[0]*nn->N[2]
         );
 }
 
@@ -97,11 +97,11 @@ double Neural_Net_error_vs_exact(struct  Neural_Net_ODE *nn, int n) {
     double d = 0;
     double x;
     for (int i = 0; i < n; i++) {
-        x = nn->training_points[i]
+        x = nn->training_points[i];
         Neural_Net_eval(nn, x);
         Neural_Net_phi(nn, x);
         // Phi(x_i) * N(x_i) - u(x_i)
-        d = n->phi[0] * n->N[0] - nn->exact_sol(x);
+        d = nn->phi[0] * nn->N[0] - nn->exact_sol(x);
         d = abs(d);
         if (m > d) {
             m = d;
