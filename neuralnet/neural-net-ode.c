@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
+#include "xmalloc.h"
 #include "neural-net-ode.h"
 #include "nelder-mead.h"
 #include "array.h"
@@ -13,11 +15,12 @@ static void sigmoid(double x, double *sigma) {
     sigma[2] = 2*pow(M_E, -2*x) / pow(pow(M_E, -x)+1, 3)
         - sigma[1];
 }
+
 static void Neural_Net_phi(struct Neural_Net_ODE *nn, double x) {
     // phi -- expanded form
-    nn->phi[0] = -x*x+x*(nn.a+nn.b)-nn.a*nn.b;
+    nn->phi[0] = -x*x+x*(nn->a+nn->b)-nn->a*nn->b;
     // phi'
-    nn->phi[1] = -2*x+nn.a+nn.b;
+    nn->phi[1] = -2*x+nn->a+nn->b;
     // phi''
     nn->phi[2] = -2;
 }
