@@ -20,7 +20,8 @@ static void sigmoid(double x, double *sigma) {
 
 void Neural_Net_phi(struct Neural_Net_ODE *nn, double x) {
     // phi -- expanded form
-    nn->phi[0] = -x*x+x*(nn->a+nn->b)-nn->a*nn->b;
+    nn->phi[0] = (nn->b-x)*(x-nn->a);
+    /*nn->phi[0] = -x*x+x*(nn->a+nn->b)-nn->a*nn->b;*/
     // phi'
     nn->phi[1] = -2*x+nn->a+nn->b;
     // phi''
@@ -103,9 +104,14 @@ double Neural_Net_error_vs_exact(struct  Neural_Net_ODE *nn, int n) {
         Neural_Net_eval(nn, x);
         Neural_Net_phi(nn, x);
         // Phi(x_i) * N(x_i) - u(x_i)
+        printf("%03d: x =       %5.3f", i, x); 
+        printf("\n exact_sol(x): %5.3f ", nn->exact_sol(x));
+        printf("\n phi(x)        %5.3f", nn->phi[0]);
+        printf("\n N(x)          %5.3f", nn->N[0]);
         d = nn->phi[0] * nn->N[0] - nn->exact_sol(x);
         d = abs(d);
-        if (m > d) {
+        printf("\n maxabs        %5.3f\n\n", d);
+        if (m < d) {
             m = d;
         }
     }   
