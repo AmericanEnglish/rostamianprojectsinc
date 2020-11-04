@@ -16,7 +16,7 @@ struct Neural_Net_ODE {
     double sigma[3]; // array to hold sig, dsig, ddsig
     double phi[3];   // array phi, dphi, ddphi
     double N[3];     // array to hold N, dN, ddN
-}
+};
 
 void Neural_Net_init(struct Neural_Net_ODE *nn);
 void Neural_Net_end(struct Neural_Net_ODE *nn);
