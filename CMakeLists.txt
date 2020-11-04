@@ -24,7 +24,7 @@ set("DEMOENSRC" "${NMEADSRC}" "${XMALLOCSRC}")
 set("DEMOODESRC" "${NNSRC}" "${XMALLOCSRC}" "${NMEADSRC}")
 
 # Header directories
-include_directories("${XMALLOC}" "${ARRAY}" "${VERTS}" "${NMEAD}" "${DEMOODE}")
+include_directories("${XMALLOC}" "${ARRAY}" "${VERTS}" "${NMEAD}" "${NN}")
 
 set("CMAKE_C_FLAGS" "-Wall -pedantic -std=c99 -O2")
 add_executable("xmalloc-demo-1" "${XMALLOC}/xmalloc-demo-1.c" "${XMALLOCSRC}")
