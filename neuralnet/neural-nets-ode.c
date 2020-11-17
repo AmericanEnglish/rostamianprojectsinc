@@ -6,15 +6,14 @@
 #include "nelder-mead.h"
 #include "array.h"
 
-#define M_E 2.7182818284590452353602874713527
 
 static void sigmoid(double x, double *sigma) {
     // sigmoid
-    sigma[0] = 1.0/(1+pow(M_E, -x));
+    sigma[0] = 1.0/(1+exp(-x));
     // sigmoid'
-    sigma[1] = pow(M_E, -x) / pow((pow(M_E, -x) + 1), 2);
+    sigma[1] = exp(-x) / pow((exp(-x) + 1), 2);
     // sigmoid''
-    sigma[2] = 2*pow(M_E, -2*x) / pow(pow(M_E, -x)+1, 3)
+    sigma[2] = 2*exp(-2*x) / pow(exp(-x)+1, 3)
         - sigma[1];
 }
 
