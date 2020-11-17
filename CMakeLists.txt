@@ -16,7 +16,7 @@ set("VERTSRC" "${VERTS}/rank-vertices.c")
 set("NMEAD" "${PROJECT_SOURCE_DIR}/nelder-mead/")
 set("NMEADSRC" "${NMEAD}/nelder-mead.c")
 
-set("NN" "${PROJECT_SOURCE_DIR}/neuralnet/")
+set("NN" "${PROJECT_SOURCE_DIR}/neuralnet-ode/")
 set("NNSRC" "${NN}/neural-nets-ode.c")
 
 # The source for these files can be seen here:
