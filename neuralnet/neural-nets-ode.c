@@ -61,8 +61,6 @@ void Neural_Net_eval(struct Neural_Net_ODE *nn, double x) {
 }
 
 static double residual_at_x(struct Neural_Net_ODE *nn, double x) {
-    Neural_Net_phi(nn, x);  // phi
-    Neural_Net_eval(nn, x); // N
     /*nn->ODE;           // ODE*/
 
     /*double R = 0.0;*/
