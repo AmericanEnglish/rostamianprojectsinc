@@ -96,8 +96,11 @@ double Neural_Net_error_vs_exact(struct  Neural_Net_ODE *nn, int n) {
     double m = 0;
     double d = 0;
     double x;
-    double h = (nn->b-nn->a)/n;
-    for (int i = 0; i < n; i++) {
+    // Assume 0 boundary conditions distribute the points in the body
+    // double h = (nn->b-nn->a)/n;
+    double h = (nn->b-nn->a)/(n+1);
+    // i=1 prevents evaluation at left boundary, and i=n+1 at right boundary
+    for (int i = 1; i < n+1; i++) {
         x = nn->a+i*h;
         Neural_Net_eval(nn, x);
         Neural_Net_phi(nn, x);
