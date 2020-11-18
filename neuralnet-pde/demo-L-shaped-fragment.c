@@ -48,7 +48,7 @@ static void my_phi(struct Neural_Net_PDE *nn, double x, double y)
  * symbolically in Maple.
 */
 static double my_pde(double x, double y, double u,
-		double u_x, double u_y,
+		double u_x,               double u_y,
 		double u_xx, double u_xy, double u_yy)
 {
 	double t1 = x * x;
@@ -106,8 +106,8 @@ int main(int argc, char *argv[]) {
     make_matrix(nn.training_points, nu, 2);
     int count = 0;
     for (int i = 0; i <nu; i++) {
-        double r = (double) rand() / RAND_MAX;
-        double s = (double) rand() / RAND_MAX;
+        double r = ((double)rand()) / RAND_MAX;
+        double s = ((double)rand()) / RAND_MAX;
         double x = (1-r)*nn.bb_xrange[0]+r*nn.bb_xrange[1];
         double y = (1-s)*nn.bb_yrange[0]+s*nn.bb_yrange[1];
         nn.phi_func(&nn, x, y);
@@ -118,7 +118,8 @@ int main(int argc, char *argv[]) {
         }
     }
     printf("number of training points = %d of %d\n", count, nu);
-
+    // Shouldn't we make nu=count? 
+    /*nn.nu = count;*/
     Neural_Net_init(&nn);
     struct nelder_mead NM = {
         .f = Neural_Net_residual,
@@ -127,7 +128,7 @@ int main(int argc, char *argv[]) {
         .x = nn.weights,
         .h = 0.1,
         .tol = 1e-5,
-        .maxevals = 1e6,
+        .maxevals = 1e5,
         .params = &nn,
     };
     printf("weights before training:\n");
