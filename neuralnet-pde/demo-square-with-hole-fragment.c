@@ -101,16 +101,20 @@ int main(int argc, char *argv[]) {
     // nu equally spaced points inside (a,b)
     make_matrix(nn.training_points, nu, 2);
     int count = 0;
-    for (int i = 0; i <nu; i++) {
-        double r = (double) rand() / RAND_MAX;
-        double s = (double) rand() / RAND_MAX;
+    for (int i = 0; i < nu; i++) {
+        double r = (double)rand() / RAND_MAX;
+        double s = (double)rand() / RAND_MAX;
         double x = (1-r)*nn.bb_xrange[0]+r*nn.bb_xrange[1];
         double y = (1-s)*nn.bb_yrange[0]+s*nn.bb_yrange[1];
         nn.phi_func(&nn, x, y);
         if (nn.phi[0][0] >= 0) {
             nn.training_points[i][0] = x;
             nn.training_points[i][1] = y;
+            /*printf("(x_%d,y_%d) = (%f, %f)\n", count, count, x, y);*/
             count++;
+        }
+        else {
+            /*printf("rejected %d: (%f, %f)\n", i, x, y);*/
         }
     }
     printf("number of training points = %d of %d\n", count, nu);
@@ -123,7 +127,7 @@ int main(int argc, char *argv[]) {
         .x = nn.weights,
         .h = 0.1,
         .tol = 1e-5,
-        .maxevals = 1e6,
+        .maxevals = 1e5,
         .params = &nn,
     };
     printf("weights before training:\n");
