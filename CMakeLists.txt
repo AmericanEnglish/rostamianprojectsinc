@@ -55,6 +55,7 @@ set("DEMOODESRC" "${NNOSRC}" "${XMALLOCSRC}" "${NMEADSRC}" "${ROSTPLOTODESRC}")
 
 # The PDE program has a lot of demos
 set("DEMOSQSRC" "${NNPSRC}" "${XMALLOCSRC}" "${NMEADSRC}" "${ROSTPLOTPDESRC}") 
+set("DEMOLSRC" "${NNPSRC}" "${XMALLOCSRC}" "${NMEADSRC}" "${ROSTPLOTPDESRC}") 
 
 # Header directories
 include_directories("${XMALLOC}" "${ARRAY}" "${VERTS}" "${NMEAD}" "${NNO}")
@@ -69,6 +70,8 @@ add_executable("demo2D" "${NMEAD}/demo2D.c" "${DEMO2DSRC}")
 add_executable("demo-energy" "${NMEAD}/demo-energy.c" "${DEMOENSRC}")
 add_executable("demo-ode1" "${NNO}/demo-ode1.c" "${DEMOODESRC}")
 add_executable("demo-square" "${NNP}/demo-square.c" "${DEMOSQSRC}")
+add_executable("demo-L-shaped" "${NNP}/demo-L-shaped-fragment.c" "${DEMOLSRC}")
 target_link_libraries("demo-energy" "m")
 target_link_libraries("demo-ode1" "m")
 target_link_libraries("demo-square" "m")
+target_link_libraries("demo-L-shaped" "m")
