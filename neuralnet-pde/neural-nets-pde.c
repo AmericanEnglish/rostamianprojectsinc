@@ -11,7 +11,7 @@ static void sigmoid(double x, double *sigma) {
     // sigmoid'
     sigma[1] = exp(-x) / pow((exp(-x) + 1), 2);
     // sigmoid''
-    sigma[2] = 2*exp(-2*x) / pow(exp(-x)+1, 3)
+    sigma[2] = 2*exp(-2*x) / pow((exp(-x)+ 1), 3)
         - sigma[1];
 }
 
@@ -108,6 +108,7 @@ double Neural_Net_residual(double *weights, int nweights,
         double r = residual_at_x_y(nn, x, y);
         sum += r*r;
     }
+
     return sum;
 }
 
@@ -126,22 +127,27 @@ double Neural_Net_error_vs_exact(struct Neural_Net_PDE *nn,
     double c = nn->bb_yrange[0];
     double d = nn->bb_yrange[1];
     
-    double x, y, z, err;
+    /*double x, y, z, err, sol;*/
+    /*err = 0;*/
+    double xh = (b-a)/m;
+    double yh = (d-c)/n;
     for (int i = 0; i <= m; i++ ) {
-        x = a + (b-a)/m*i;
-        for (int j = 0; j <= n; i++) {
-            y = c + (d-c)/n*j;
+        double x  = a + xh*i;
+        for (int j = 0; j <= n; j++) {
+            double y = c + yh*j;
             nn->phi_func(nn, x, y);
             if (nn->phi[0][0] < 0) {
                 continue;
             }
             Neural_Net_eval(nn, x, y);
-            z = nn->N[0][0]*nn->phi[0][0];
-            err = fabs(z - nn->exact_sol(x, y));
+            double z = nn->N[0][0]*nn->phi[0][0];
+            double sol = nn->exact_sol(x,y);
+            double err = fabs(z - sol);
             if (err > max_err) {
                 max_err = err;
             }
         }
     }
+    printf("max_err: %f\n", max_err);
     return max_err;
 }
