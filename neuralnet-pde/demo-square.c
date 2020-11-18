@@ -12,7 +12,7 @@ static double exact_sol(double x, double y) {
 static double my_pde(double x, double y, double u,
         double u_x,               double u_y, 
         double u_xx, double u_xy, double u_yy) {
-    return 32*(pow(x, 2)+pow(y, 2)-x-y);
+    return u_xx + u_yy - 32*(pow(x, 2)+pow(y, 2)-x-y);
 }
 
 static void my_phi(struct Neural_Net_PDE *nn,
@@ -72,7 +72,7 @@ int main(int argc, char *argv[]) {
         .training_points = training_points,
         .exact_sol       = exact_sol
     };
-
+    printf("q = %d, nu = %d\n", q, nu);
     // nu equally spaced points inside (a,b)
     make_matrix(nn.training_points, nu, 2);
     int count = 0;
@@ -120,11 +120,12 @@ int main(int argc, char *argv[]) {
 
     if (nn.exact_sol != NULL) {
         printf("Error versus the PDE's exact solution = %g\n",
-                Neural_Net_error_vs_exact(&nn, 50, 50));
+                Neural_Net_error_vs_exact(&nn, 10, 10));
+                /*Neural_Net_error_vs_exact(&nn, 50, 50));*/
     }
-    Neural_Net_plot_with_maple(&nn, 50, 50, "./zz.mpl");
+    Neural_Net_plot_with_maple(&nn, 10, 10, "./zz.mpl");
     /*Neural_Net_plot_with_maple(&nn, 50, "/tmp/zz.mpl");*/
-    Neural_Net_plot_with_matlab(&nn, 50, 50, "./zz.m");
+    Neural_Net_plot_with_matlab(&nn, 10, 10, "./zz.m");
     /*Neural_Net_plot_with_matlab(&nn, 50, "/tmp/zz.m");*/
 
     Neural_Net_end(&nn); // end neural network

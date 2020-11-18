@@ -148,6 +148,5 @@ double Neural_Net_error_vs_exact(struct Neural_Net_PDE *nn,
             }
         }
     }
-    printf("max_err: %f\n", max_err);
     return max_err;
 }
