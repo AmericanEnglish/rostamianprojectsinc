@@ -5,13 +5,11 @@
 #include "nelder-mead.h"
 #include "array.h"
 
-#define PI 4.0*atan(1.0)
-
 static double exact_sol(double x, double y) {
     return 16*x*(1-x)*y*(1-y);
 }
 
-static double my_pde(double x, double y, 
+static double my_pde(double x, double y, double u,
         double u_x,               double u_y, 
         double u_xx, double u_xy, double u_yy) {
     return 32*(pow(x, 2)+pow(y, 2)-x-y);
@@ -41,9 +39,7 @@ static void show_usage(char *progname) {
 }
 
 int main(int argc, char *argv[]) {
-    double a = 0;  // left end of the interval
-    double b = PI; // right end of the interval
-    double **training_points;
+    double **training_points = NULL;
     char *endptr;
 
     if (argc != 3) {
@@ -73,7 +69,7 @@ int main(int argc, char *argv[]) {
         .bb_yrange = {0, 1},
         .q         = q,
         .nu        = nu,
-        .training_points = NULL,
+        .training_points = training_points,
         .exact_sol       = exact_sol
     };
 

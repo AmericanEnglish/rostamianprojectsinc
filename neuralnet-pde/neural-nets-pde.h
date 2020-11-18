@@ -28,6 +28,8 @@ void Neural_Net_eval(struct Neural_Net_PDE *nn,
         double x, double y);
 void Neural_Net_plot_with_maple(struct Neural_Net_PDE *nn,
         int n, int m, char *outfile);
+void Neural_Net_plot_with_matlab(struct Neural_Net_PDE *nn,
+        int n, int m, char *outfile);
 double Neural_Net_residual(double *weights, int nweights, 
         void *params);
 double Neural_Net_error_vs_exact(struct Neural_Net_PDE *nn, int m, 

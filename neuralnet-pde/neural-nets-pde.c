@@ -3,7 +3,6 @@
 #include <stdlib.h>
 
 #include "neural-nets-pde.h"
-/*#include "xmalloc.h"*/
 #include "array.h"
 
 static void sigmoid(double x, double *sigma) {
@@ -117,8 +116,7 @@ double Neural_Net_error_vs_exact(struct Neural_Net_PDE *nn,
         int m, int n) {
     if (nn->exact_sol == NULL) {
         fprintf(stderr,
-                "unable to calculate the error since ",
-                "no exact solution is provided");
+                "unable to calculate the error since no exact solution is provided\n");
         exit(EXIT_FAILURE);
     }
 
@@ -132,6 +130,7 @@ double Neural_Net_error_vs_exact(struct Neural_Net_PDE *nn,
     for (int i = 0; i <= m; i++ ) {
         x = a + (b-a)/m*i;
         for (int j = 0; j <= n; i++) {
+            y = c + (d-c)/n*j;
             nn->phi_func(nn, x, y);
             if (nn->phi[0][0] < 0) {
                 continue;
