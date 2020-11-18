@@ -116,16 +116,16 @@ int main(int argc, char *argv[]) {
     }
 
     printf("weights after training: \n");
-    print_vector("%7.3f", nn.weights, nn.nweights);
+    print_vector("%7.3f ", nn.weights, nn.nweights);
 
     if (nn.exact_sol != NULL) {
         printf("Error versus the PDE's exact solution = %g\n",
-                Neural_Net_error_vs_exact(&nn, 10, 10));
+                Neural_Net_error_vs_exact(&nn, 50, 50));
                 /*Neural_Net_error_vs_exact(&nn, 50, 50));*/
     }
-    Neural_Net_plot_with_maple(&nn, 10, 10, "./zz.mpl");
+    Neural_Net_plot_with_maple(&nn, 50, 50, "./zz.mpl");
     /*Neural_Net_plot_with_maple(&nn, 50, "/tmp/zz.mpl");*/
-    Neural_Net_plot_with_matlab(&nn, 10, 10, "./zz.m");
+    Neural_Net_plot_with_matlab(&nn, 50, 50, "./zz.m");
     /*Neural_Net_plot_with_matlab(&nn, 50, "/tmp/zz.m");*/
 
     Neural_Net_end(&nn); // end neural network
