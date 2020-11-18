@@ -45,13 +45,20 @@ void Neural_Net_eval(struct Neural_Net_PDE *nn, double x, double y) {
         double z = u[i] + w1[i]*x+w2[i]*y;
         sigmoid(z, nn->sigma);
         // I could do double loops but i prefer this nice explicit form
-        nn->N[0][0] += v[i]*nn->sigma[0];
-        nn->N[1][0] += v[i]*pow(w1[i], 1)*nn->sigma[1];
-        nn->N[2][0] += v[i]*pow(w1[i], 2)*nn->sigma[2];
-        nn->N[0][1] += v[i]*pow(w2[i], 1)*nn->sigma[1];
-        nn->N[0][2] += v[i]*pow(w2[i], 2)*nn->sigma[2];
-        nn->N[1][1] += v[i]*pow(w1[i], 1)
-                           *pow(w2[i], 1)*nn->sigma[2];
+        for (int ix = 0; ix <= 2; ix++) {
+            for (int iy = 0; iy <= 2; iy++) {
+                nn->N[ix][iy] += v[i]*pow(w1[i], ix)
+                                     *pow(w2[i], iy)
+                                     *nn->sigma[ix+iy];
+            }
+        }
+        /*nn->N[0][0] += v[i]*nn->sigma[0];*/
+        /*nn->N[1][0] += v[i]*pow(w1[i], 1)*nn->sigma[1];*/
+        /*nn->N[2][0] += v[i]*pow(w1[i], 2)*nn->sigma[2];*/
+        /*nn->N[0][1] += v[i]*pow(w2[i], 1)*nn->sigma[1];*/
+        /*nn->N[0][2] += v[i]*pow(w2[i], 2)*nn->sigma[2];*/
+        /*nn->N[1][1] += v[i]*pow(w1[i], 1)*/
+                           /**pow(w2[i], 1)*nn->sigma[2];*/
     }
 }
 
@@ -61,34 +68,28 @@ static double residual_at_x_y(struct Neural_Net_PDE *nn,
     Neural_Net_eval(nn, x, y);
     // Get Phi
     nn->phi_func(nn, x, y);
-
-    return nn->PDE(x, y, 
-            // p*N
-            nn->phi[0][0]*nn->N[0][0],
-            // d/dx p_x*N+N_x*p
-            nn->phi[1][0]*nn->N[0][0]
-                +nn->N[1][0]*nn->phi[0][0],
-            // d/dy (p_y N) + (N_y p)
-            nn->phi[0][1]*nn->N[0][0]
-                +nn->N[0][1]*nn->phi[0][0],
-            // d2/dx2 
-            // N*p_xx+2 N_x p_x + p*N_xx
-            nn->N[0][0]*nn->phi[2][0]
-                +2*nn->N[1][0]*nn->phi[1][0]
-                +nn->phi[0][0]*nn->N[2][0],
-            // d/dy d/dx
-            // (p_x N) + (N_x p) <- d/dx
-            // (p_xy N + p_x N_y) + (N_xy p + N_x p_y) <- ()_xy
-            nn->phi[1][1]*nn->N[0][0]
-                +nn->phi[1][0]*nn->N[0][1]
-                +nn->N[1][1]*nn->phi[0][0]
-                +nn->N[1][0]*nn->phi[0][1],
-            // d2/dy2
-            // N*p_yy+2 N_y p_y + p*N_yy
-            nn->N[0][0]*nn->phi[0][2]
-                +2*nn->N[0][1]*nn->phi[0][1]
-                +nn->phi[0][0]*nn->N[0][2]
-        );
+    double u    = 
+         nn->phi[0][0]*nn->N[0][0];
+    double u_x  = 
+         nn->phi[0][0]*nn->N[1][0]
+        +nn->phi[1][0]*nn->N[0][0]; 
+    double u_xx = 
+         nn->phi[2][0]*nn->N[0][0]
+        +nn->phi[0][0]*nn->N[2][0]
+        +nn->phi[1][0]*nn->N[1][0]*2;
+    double u_y  = 
+         nn->phi[0][0]*nn->N[0][1]
+        +nn->phi[0][1]*nn->N[0][0];
+    double u_yy = 
+         nn->phi[0][2]*nn->N[0][0]
+        +nn->phi[0][0]*nn->N[0][2]
+        +nn->phi[0][1]*nn->N[0][1]*2;
+    double u_xy = 
+         nn->phi[1][1]*nn->N[0][0]
+        +nn->phi[0][0]*nn->N[1][1]
+        +nn->phi[0][1]*nn->N[1][0]
+        +nn->phi[1][0]*nn->N[0][1];
+    return nn->PDE(x, y, u, u_x, u_y, u_xx, u_xy, u_yy);
 
 }
 
