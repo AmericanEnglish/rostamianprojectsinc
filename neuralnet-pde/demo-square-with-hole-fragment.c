@@ -108,8 +108,8 @@ int main(int argc, char *argv[]) {
         double y = (1-s)*nn.bb_yrange[0]+s*nn.bb_yrange[1];
         nn.phi_func(&nn, x, y);
         if (nn.phi[0][0] >= 0) {
-            nn.training_points[i][0] = x;
-            nn.training_points[i][1] = y;
+            nn.training_points[count][0] = x;
+            nn.training_points[count][1] = y;
             /*printf("(x_%d,y_%d) = (%f, %f)\n", count, count, x, y);*/
             count++;
         }
@@ -117,6 +117,7 @@ int main(int argc, char *argv[]) {
             /*printf("rejected %d: (%f, %f)\n", i, x, y);*/
         }
     }
+    nn.nu = count;
     printf("number of training points = %d of %d\n", count, nu);
 
     Neural_Net_init(&nn);
