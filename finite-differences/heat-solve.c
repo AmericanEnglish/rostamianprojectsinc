@@ -28,10 +28,10 @@ static double error_vs_exact(struct heat_solve *prob) {
      * so we ignore i = 0 and i = n.
      */
     // Ignore the boundary points...
-    for (int i = 1; i < prob->n; i++) {
-        for (int j = 1; j < prob->m; j++) {
-            double x = prob->a+i*dx;
-            double t = j*dt;
+    for (int i = 1; i < prob->m; i++) {
+        for (int j = 1; j < prob->n; j++) {
+            double x = prob->a+j*dx;
+            double t = i*dt;
             // math something?
             diff = fabs(prob->u[i][j] - prob->exact_sol(x, t));
             if  (diff > err) {

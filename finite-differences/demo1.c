@@ -100,18 +100,6 @@ int main(int argc, char *argv[]) {
     }
     /*putchar("\n");*/
     printf("\n");
-    
-
-    prob.method       = FD_implicit;
-    prob.maple_out    = "prob1_implicit.mpl";
-    prob.matlab_out   = "prob1_implicit.m";
-    prob.geomview_out = "prob1_implicit.gv";
-    heat_solve(&prob);
-    if (prob.exact_sol != NULL) {
-        printf("absolute error = %g\n", prob.error);
-    }
-    /*putchar("\n");*/
-    printf("\n");
 
     prob.method       = FD_crank_nicolson;
     prob.maple_out    = "prob1_crank_nicolson.mpl";
