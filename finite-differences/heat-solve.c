@@ -129,7 +129,7 @@ static void heat_solve_explicit(struct heat_solve *prob) {
     }
     // Time Step
     double t;
-    for (int i = 0; i <= m; i++) {
+    for (int i = 1; i <= m; i++) {
         // Compute time
         t = i*dt;
         // Boundary Conditions
@@ -168,12 +168,12 @@ static void heat_solve_crank_nicolson(struct heat_solve *prob) {
         c[j] = -r;
     }
     // Initial Condition
-    for (int j = 1; j < n; j++ ) {
+    for (int j = 0; j <= n; j++ ) {
         double x = prob->a+j*dx;
         u[0][j] = prob->ic(x);
     }
     // Time Step
-    for (int i = 0; i <= m; i++) {
+    for (int i = 1; i <= m; i++) {
         // Compute time
         double t = i*dt;
         // Boundary Conditions
@@ -203,16 +203,44 @@ static void heat_solve_crank_nicolson(struct heat_solve *prob) {
 }
 
 static void heat_solve_seidman_sweep(struct heat_solve *prob) {
-    // Needed variables
-    // Off Diagonal
-    // Initial Condition
-    // Time Step
-        // Compute time
-        // Boundary Conditions
-        // Fill the b in Ax+b
-        // Fill diagonal
-        // Solve the equation for the given timestep
+    // Variables
+    // Variables Needed
+    int m = prob->m;
+    int n = prob->n;
+    double **u = prob->u;
+    double dx = (prob->b - prob->a) / n;
+    double dt = prob->T / m;
+    double r = dt/(dx*dx);
+    double rp = r/2;
+    double *v;
+    printf("--- Seidman finite difference scheme ---\n");
+    printf("r = %g\n", r);
 
+    make_vector(v, n-1);
+    
+    // Initial condition
+    for (int j = 0; j <= n; j++) {
+        double x = prob->a + j*dx;
+        u[0][j] = prob->ic(x);
+    }
+    for (int i = 1; i <= m; i++) {
+        double t = i*dt;
+        // Compute v via a forward sweep for t-dt
+        for (int j = 1; j <= n-1; j++) {
+            // Simplified formula
+            v[j] = rp*v[j-1] + (1-rp)*u[i-1][j]+rp*u[i-1][j+1];
+            v[j] /= (1+rp);
+        }
+        // Fill in the boundary points
+        u[i][0] = prob->bcL(t);
+        u[i][n] = prob->bcR(t);
+        // Compute u via the backward sweep for t
+        for (int j = n-1; j >= 1; j++) {
+            // Simplified formula
+            u[i][j] = rp*v[j-1] + (1-rp)*v[j] + rp*u[i][j+1];
+        }
+    }
+    free_vector(v);
 }
 
 void heat_solve(struct heat_solve *prob) {
