@@ -33,21 +33,25 @@ int main(int argc, char *argv[]) {
     char *endptr;
     if (argc != 4) {
         show_usage_and_exit(argv[0]);
+        return EXIT_FAILURE;
     }
 
     double T = strtod(argv[1], &endptr);
     if (*endptr != '\0' || T <= 0.0) {
         show_usage_and_exit(argv[0]);
+        return EXIT_FAILURE;
     }
     
     int n = strtol(argv[2], &endptr, 10);
     if (*endptr != '\0' || n < 1) {
         show_usage_and_exit(argv[0]);
+        return EXIT_FAILURE;
     }
 
     int m = strtol(argv[3], &endptr, 10);
     if (*endptr != '\0' || m < 1) {
         show_usage_and_exit(argv[0]);
+        return EXIT_FAILURE;
     }
     
     struct heat_solve prob = {
@@ -58,12 +62,12 @@ int main(int argc, char *argv[]) {
         .m   =  m,
         .ic  = ic,
 
-        .bcL = bc_L,
-        .bcR = bc_R,
-        .method = FD_undefined,
-        .exact_sol = exact_sol,
-        .maple_out = NULL,
-        .matlab_out = NULL,
+        .bcL          = bc_L,
+        .bcR          = bc_R,
+        .method       = FD_undefined,
+        .exact_sol    = exact_sol,
+        .maple_out    = NULL,
+        .matlab_out   = NULL,
         .geomview_out = NULL,
     };
 

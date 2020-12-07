@@ -106,9 +106,10 @@ static void heat_solve_implicit(struct heat_solve *prob) {
 
 void show_usage_and_exit(char *progname) {
     printf("Usage: %s T n m\n", progname);
-    printf("   T : solve over 0 <= T \n;");
+    printf("   T : solve over 0 <= T \n");
     printf("   n : grid points a=x[0], ..., b=x[n]\n");
     printf("   m : time slices 0=t[0], ..., T=t[m]\n");
+
 }
 
 static void heat_solve_explicit(struct heat_solve *prob) {
