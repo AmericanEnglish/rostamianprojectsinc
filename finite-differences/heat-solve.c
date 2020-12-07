@@ -236,7 +236,7 @@ static void heat_solve_seidman_sweep(struct heat_solve *prob) {
         u[i][0] = prob->bcL(t);
         u[i][n] = prob->bcR(t);
         // Compute u via the backward sweep for t
-        for (int j = n-1; j >= 1; j++) {
+        for (int j = n-1; j >= 1; j--) {
             // Simplified formula
             u[i][j] = rp*v[j-1] + (1-rp)*v[j] + rp*u[i][j+1];
         }
