@@ -61,7 +61,7 @@ set("DEMOSQSRC" "${NNPSRC}" "${XMALLOCSRC}" "${NMEADSRC}" "${ROSTPLOTPDESRC}")
 set("DEMOLSRC" "${NNPSRC}" "${XMALLOCSRC}" "${NMEADSRC}" "${ROSTPLOTPDESRC}") 
 
 # The finite difference program 
-set("FDSRC" "${HEATSRC}")
+set("FDSRC" "${HEATSRC}" "${XMALLOCSRC}")
 
 # Header directories
 include_directories("${XMALLOC}" "${ARRAY}" "${VERTS}" "${NMEAD}" "${NNO} ${FD}")
@@ -85,4 +85,4 @@ target_link_libraries("demo-ode1" "m")
 target_link_libraries("demo-square" "m")
 target_link_libraries("demo-square-hole" "m")
 target_link_libraries("demo-L-shaped" "m")
-target_link_libraries("demo-finite-methods", "m")
+target_link_libraries("demo-finite-methods" "m")

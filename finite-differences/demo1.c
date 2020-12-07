@@ -32,14 +32,20 @@ static double bc_R(double t) {
 int main(int argc, char *argv[]) {
     char *endptr;
     if (argc != 4) {
-    }
-    show_usage_and_exit(argv[0]);
-    double T = strtod(argv[1], &endptr);
-    if (*endptr != '\0' || n < 1) {
-        show_usage_and_ext(argv[0]);
+        show_usage_and_exit(argv[0]);
     }
 
-    int n = strtol(argv[3], &endptr, 10);
+    double T = strtod(argv[1], &endptr);
+    if (*endptr != '\0' || T <= 0.0) {
+        show_usage_and_exit(argv[0]);
+    }
+    
+    int n = strtol(argv[2], &endptr, 10);
+    if (*endptr != '\0' || n < 1) {
+        show_usage_and_exit(argv[0]);
+    }
+
+    int m = strtol(argv[3], &endptr, 10);
     if (*endptr != '\0' || m < 1) {
         show_usage_and_exit(argv[0]);
     }
@@ -54,7 +60,7 @@ int main(int argc, char *argv[]) {
 
         .bcL = bc_L,
         .bcR = bc_R,
-        .emthod = FD_undefined,
+        .method = FD_undefined,
         .exact_sol = exact_sol,
         .maple_out = NULL,
         .matlab_out = NULL,
@@ -74,11 +80,11 @@ int main(int argc, char *argv[]) {
     prob.matlab_out   = "prob1_explicit.m";
     prob.geomview_out = "prob1_implicit.gc";
     heat_solve(&prob);
-
     if (prob.exact_sol != NULL) {
         printf("absolute error = %g\n", prob.error);
     }
-    putchar('\n');
+    /*putchar('\n');*/
+    printf("\n");
 
     prob.method       = FD_implicit;
     prob.maple_out    = "prob1_implicit.mpl";
@@ -88,7 +94,8 @@ int main(int argc, char *argv[]) {
     if (prob.exact_sol != NULL) {
         printf("absolute error = %g\n", prob.error);
     }
-    putchar("\n");
+    /*putchar("\n");*/
+    printf("\n");
     
 
     prob.method       = FD_implicit;
@@ -99,17 +106,19 @@ int main(int argc, char *argv[]) {
     if (prob.exact_sol != NULL) {
         printf("absolute error = %g\n", prob.error);
     }
-    putchar("\n");
+    /*putchar("\n");*/
+    printf("\n");
 
-    prob.method       = FD_nicolson;
-    prob.maple_out    = "prob1_nicolson.mpl";
-    prob.matlab_out   = "prob1_nicolson.m";
-    prob.geomview_out = "prob1_nicolson.gv";
+    prob.method       = FD_crank_nicolson;
+    prob.maple_out    = "prob1_crank_nicolson.mpl";
+    prob.matlab_out   = "prob1_crank_nicolson.m";
+    prob.geomview_out = "prob1_crank_nicolson.gv";
     heat_solve(&prob);
     if (prob.exact_sol != NULL) {
         printf("absolute error = %g\n", prob.error);
     }
-    putchar("\n");
+    /*putchar("\n");*/
+    printf("\n");
 
     prob.method       = FD_seidman_sweep;
     prob.maple_out    = "prob1_seidman_sweep.mpl";
@@ -119,7 +128,8 @@ int main(int argc, char *argv[]) {
     if (prob.exact_sol != NULL) {
         printf("absolute error = %g\n", prob.error);
     }
-    putchar("\n");
+    /*putchar('\n');*/
+    printf("\n");
 
     free_matrix(prob.u);
 

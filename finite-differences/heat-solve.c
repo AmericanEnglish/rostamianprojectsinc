@@ -56,7 +56,7 @@ static void heat_solve_implicit(struct heat_solve *prob) {
         u[0][j] = prob->ic(x);
     }
 
-    for (i=1; i <= m; i++) {
+    for (int i = 1; i <= m; i++) {
         double t = i*dt;
         u[i][0] = prob->bcL(t);
         u[i][n] = prob->bcR(t);
