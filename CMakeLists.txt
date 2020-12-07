@@ -22,6 +22,9 @@ set("NNOSRC" "${NNO}/neural-nets-ode.c")
 set("NNP"    "${PROJECT_SOURCE_DIR}/neuralnet-pde/")
 set("NNPSRC" "${PROJECT_SOURCE_DIR}/neuralnet-pde/neural-nets-pde.c")
 
+set("FD"      "${PROJECT_SOURCE_DIR}/finite-differences/")
+set("HEATSRC" "${PROJECT_SOURCE_DIR}/finite-differences/heat-solve.c")
+
 # The source for these files can be seen here:
 # https://userpages.umbc.edu/~rostamia/cbook/neural-nets-odes.html
 # We will download these right here for completion.
@@ -57,8 +60,11 @@ set("DEMOODESRC" "${NNOSRC}" "${XMALLOCSRC}" "${NMEADSRC}" "${ROSTPLOTODESRC}")
 set("DEMOSQSRC" "${NNPSRC}" "${XMALLOCSRC}" "${NMEADSRC}" "${ROSTPLOTPDESRC}") 
 set("DEMOLSRC" "${NNPSRC}" "${XMALLOCSRC}" "${NMEADSRC}" "${ROSTPLOTPDESRC}") 
 
+# The finite difference program 
+set("FDSRC" "${HEATSRC}")
+
 # Header directories
-include_directories("${XMALLOC}" "${ARRAY}" "${VERTS}" "${NMEAD}" "${NNO}")
+include_directories("${XMALLOC}" "${ARRAY}" "${VERTS}" "${NMEAD}" "${NNO} ${FD}")
 
 
 set("CMAKE_C_FLAGS" "-Wall -pedantic -std=c99 -O2")
@@ -72,8 +78,11 @@ add_executable("demo-ode1" "${NNO}/demo-ode1.c" "${DEMOODESRC}")
 add_executable("demo-square" "${NNP}/demo-square.c" "${DEMOSQSRC}")
 add_executable("demo-L-shaped" "${NNP}/demo-L-shaped-fragment.c" "${DEMOLSRC}")
 add_executable("demo-square-hole" "${NNP}/demo-square-with-hole-fragment.c" "${DEMOLSRC}")
+add_executable("demo-finite-methods" "${FD}/demo1.c" "${FDSRC}")
+
 target_link_libraries("demo-energy" "m")
 target_link_libraries("demo-ode1" "m")
 target_link_libraries("demo-square" "m")
 target_link_libraries("demo-square-hole" "m")
 target_link_libraries("demo-L-shaped" "m")
+target_link_libraries("demo-finite-methods", "m")
