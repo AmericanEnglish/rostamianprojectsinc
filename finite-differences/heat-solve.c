@@ -217,7 +217,7 @@ static void heat_solve_seidman_sweep(struct heat_solve *prob) {
     printf("--- Seidman finite difference scheme ---\n");
     printf("r = %g\n", r);
 
-    make_vector(v, n-1);
+    make_vector(v, n);
     
     // Initial condition
     for (int j = 0; j <= n; j++) {
@@ -232,6 +232,7 @@ static void heat_solve_seidman_sweep(struct heat_solve *prob) {
             v[j] = rp*v[j-1] + (1-rp)*u[i-1][j]+rp*u[i-1][j+1];
             v[j] /= (1+rp);
         }
+        v[0] = prob->bcL(t-dt);
         // Fill in the boundary points
         u[i][0] = prob->bcL(t);
         u[i][n] = prob->bcR(t);
@@ -239,6 +240,7 @@ static void heat_solve_seidman_sweep(struct heat_solve *prob) {
         for (int j = n-1; j >= 1; j--) {
             // Simplified formula
             u[i][j] = rp*v[j-1] + (1-rp)*v[j] + rp*u[i][j+1];
+            u[i][j] /= (1+rp);
         }
     }
     free_vector(v);
