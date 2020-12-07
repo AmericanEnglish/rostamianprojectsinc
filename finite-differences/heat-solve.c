@@ -143,8 +143,8 @@ static void heat_solve_explicit(struct heat_solve *prob) {
                     + r*u[i-1][j+1];
         }
         // Compute +b
-        u[i][1]   = r*u[i][0];
-        u[i][n-1] = r*u[i][n];
+        u[i][1]   += r*u[i][0];
+        u[i][n-1] += r*u[i][n];
     }
 }
 
