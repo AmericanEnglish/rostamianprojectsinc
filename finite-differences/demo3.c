@@ -76,7 +76,7 @@ int main(int argc, char *argv[]) {
         .bcL          = bc_L,
         .bcR          = bc_R,
         .method       = FD_undefined,
-        .exact_sol    = exact_sol,
+        .exact_sol    = NULL, // exact_sol,
         .maple_out    = NULL,
         .matlab_out   = NULL,
         .geomview_out = NULL,
