@@ -1,10 +1,11 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <math.h>
+
 #include "heat-solve.h"
 #include "array.h"
 #include "plot3d.h"
 
-#include <math.h>
 
 static void trisolve(int n, const double *a, double *d, const double *c, double *b, double *x) {
     double m;
@@ -44,30 +45,8 @@ static double error_vs_exact(struct heat_solve *prob) {
     return err;
 }
 
-static void write_plotting_script(struct heat_solve *prob) {
-    struct plot3d p = {
-        .a = prob->a,		// a < x < b
-        .b = prob->b,		// a < x < b
-        .T = prob->T,		// 0 < t < T
-        .n = prob->n,			// number of x subintervals
-        .m = prob->m,			// number of t subintervals
-        .u = prob->u,		// (m+1)x(n+1) data array
-        .maple_out = prob->maple_out,	// output file for maple graphics 
-        .matlab_out = prob->matlab_out,	// output file for matlab graphics 
-        .geomview_out = prob->geomview_out	// output file for geomview graphics 
-    };
-
-    if (prob->geomview_out != NULL) {
-        plot_with_geomview(p);
-        /*plot_with_geomview(prob);*/
-    }
-    if (prob->maple_out != NULL) {
-        /*plot_with_maple(prob);*/
-    }
-    if (prob->matlab_out != NULL) {
-        plot_with_matlab(prob);
-    }
-}
+/*static void write_plotting_script(struct heat_solve *prob) {*/
+/*}*/
 
 static void heat_solve_implicit(struct heat_solve *prob) {
     int m = prob->m;
@@ -275,7 +254,19 @@ void heat_solve(struct heat_solve *prob) {
                     "in struct heat_solve\n");
     }
 
-    write_plotting_script(prob);
+    /*write_plotting_script(prob);*/
+    struct plot3d p = {
+        .a = prob->a,		// a < x < b
+        .b = prob->b,		// a < x < b
+        .T = prob->T,		// 0 < t < T
+        .n = prob->n,			// number of x subintervals
+        .m = prob->m,			// number of t subintervals
+        .u = prob->u,		// (m+1)x(n+1) data array
+        .maple_out = prob->maple_out,	// output file for maple graphics 
+        .matlab_out = prob->matlab_out,	// output file for matlab graphics 
+        .geomview_out = prob->geomview_out	// output file for geomview graphics 
+    };
+    plot3d(&p);
     if (prob->exact_sol != NULL) {
         prob->error = error_vs_exact(prob);
     }

@@ -71,9 +71,9 @@ int main(int argc, char *argv[]) {
 
     putchar('\n');
     prob.method       = FD_explicit;
-    prob.maple_out    = "prob1_explicit.mpl";
-    prob.matlab_out   = "prob1_explicit.m";
-    prob.geomview_out = "prob1_implicit.gv";
+    prob.maple_out    = "prob3_explicit.mpl";
+    prob.matlab_out   = "prob3_explicit.m";
+    prob.geomview_out = "prob3_implicit.gv";
     heat_solve(&prob);
     if (prob.exact_sol != NULL) {
         printf("absolute error = %g\n", prob.error);
@@ -81,9 +81,9 @@ int main(int argc, char *argv[]) {
     putchar('\n');
 
     prob.method       = FD_implicit;
-    prob.maple_out    = "prob1_implicit.mpl";
-    prob.matlab_out   = "prob1_implicit.m";
-    prob.geomview_out = "prob1_implicit.gv";
+    prob.maple_out    = "prob3_implicit.mpl";
+    prob.matlab_out   = "prob3_implicit.m";
+    prob.geomview_out = "prob3_implicit.gv";
     heat_solve(&prob);
     if (prob.exact_sol != NULL) {
         printf("absolute error = %g\n", prob.error);
@@ -91,9 +91,9 @@ int main(int argc, char *argv[]) {
     putchar('\n');
 
     prob.method       = FD_crank_nicolson;
-    prob.maple_out    = "prob1_crank_nicolson.mpl";
-    prob.matlab_out   = "prob1_crank_nicolson.m";
-    prob.geomview_out = "prob1_crank_nicolson.gv";
+    prob.maple_out    = "prob3_crank_nicolson.mpl";
+    prob.matlab_out   = "prob3_crank_nicolson.m";
+    prob.geomview_out = "prob3_crank_nicolson.gv";
     heat_solve(&prob);
     if (prob.exact_sol != NULL) {
         printf("absolute error = %g\n", prob.error);
@@ -101,9 +101,9 @@ int main(int argc, char *argv[]) {
     putchar('\n');
 
     prob.method       = FD_seidman_sweep;
-    prob.maple_out    = "prob1_seidman_sweep.mpl";
-    prob.matlab_out   = "prob1_seidman_sweep.m";
-    prob.geomview_out = "prob1_seidman_sweep.gv";
+    prob.maple_out    = "prob3_seidman_sweep.mpl";
+    prob.matlab_out   = "prob3_seidman_sweep.m";
+    prob.geomview_out = "prob3_seidman_sweep.gv";
     heat_solve(&prob);
     if (prob.exact_sol != NULL) {
         printf("absolute error = %g\n", prob.error);
