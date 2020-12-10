@@ -6,63 +6,43 @@
 
 #define PI 4.0*atan(1.0)
 
-/* A simple IBVP for the heat equation, with exact solution
- * u_t = u_xx
- * exact_sol = e*(-pi^2 t ) cos(pi/ 2 x)
- *
- */
-
-static double exact_sol(double x, double t) {
-    if (t == 0) {
-        return 0;
-    }
-    else if (t > 0 && x == -1) {
-        return 0;
-    }
-    else if (t > 0 && x == 1) {
-        return 1;
-        
-    }
-    // No exact solution on the boundary...
-    return NAN;
-}
-
 // Calculate initial and boundary conditions from the exact solution
 static double ic (double x ){
-    return exact_sol(x, 0);
+    if (abs(x) < 0.4) {
+        return 1;
+    }
+    else {
+        return 0;
+    }
 }
 
 static double bc_L(double t) {
-    return exact_sol(-1, t);
+    return 0;
 }
 
 static double bc_R(double t) {
-    return exact_sol(1, t);
+    return 0;
 }
 
 int main(int argc, char *argv[]) {
     char *endptr;
     if (argc != 4) {
         show_usage_and_exit(argv[0]);
-        return EXIT_FAILURE;
     }
 
     double T = strtod(argv[1], &endptr);
     if (*endptr != '\0' || T <= 0.0) {
         show_usage_and_exit(argv[0]);
-        return EXIT_FAILURE;
     }
     
     int n = strtol(argv[2], &endptr, 10);
     if (*endptr != '\0' || n < 1) {
         show_usage_and_exit(argv[0]);
-        return EXIT_FAILURE;
     }
 
     int m = strtol(argv[3], &endptr, 10);
     if (*endptr != '\0' || m < 1) {
         show_usage_and_exit(argv[0]);
-        return EXIT_FAILURE;
     }
     
     struct heat_solve prob = {
@@ -93,13 +73,12 @@ int main(int argc, char *argv[]) {
     prob.method       = FD_explicit;
     prob.maple_out    = "prob1_explicit.mpl";
     prob.matlab_out   = "prob1_explicit.m";
-    prob.geomview_out = "prob1_implicit.gc";
+    prob.geomview_out = "prob1_implicit.gv";
     heat_solve(&prob);
     if (prob.exact_sol != NULL) {
         printf("absolute error = %g\n", prob.error);
     }
-    /*putchar('\n');*/
-    printf("\n");
+    putchar('\n');
 
     prob.method       = FD_implicit;
     prob.maple_out    = "prob1_implicit.mpl";
@@ -109,8 +88,7 @@ int main(int argc, char *argv[]) {
     if (prob.exact_sol != NULL) {
         printf("absolute error = %g\n", prob.error);
     }
-    /*putchar("\n");*/
-    printf("\n");
+    putchar('\n');
 
     prob.method       = FD_crank_nicolson;
     prob.maple_out    = "prob1_crank_nicolson.mpl";
@@ -120,8 +98,7 @@ int main(int argc, char *argv[]) {
     if (prob.exact_sol != NULL) {
         printf("absolute error = %g\n", prob.error);
     }
-    /*putchar("\n");*/
-    printf("\n");
+    putchar('\n');
 
     prob.method       = FD_seidman_sweep;
     prob.maple_out    = "prob1_seidman_sweep.mpl";
@@ -131,8 +108,7 @@ int main(int argc, char *argv[]) {
     if (prob.exact_sol != NULL) {
         printf("absolute error = %g\n", prob.error);
     }
-    /*putchar('\n');*/
-    printf("\n");
+    putchar('\n');
 
     free_matrix(prob.u);
 

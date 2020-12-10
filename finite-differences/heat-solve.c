@@ -28,10 +28,10 @@ static double error_vs_exact(struct heat_solve *prob) {
      * so we ignore i = 0 and i = n.
      */
     // Ignore the boundary points...
-    for (int i = 1; i < prob->m; i++) {
-        for (int j = 1; j < prob->n; j++) {
+    for (int i = 0; i <= prob->m; i++) {
+        double t = i*dt;
+        for (int j = 0; j < prob->n; j++) {
             double x = prob->a+j*dx;
-            double t = i*dt;
             // math something?
             diff = fabs(prob->u[i][j] - prob->exact_sol(x, t));
             if  (diff > err) {
@@ -109,7 +109,7 @@ void show_usage_and_exit(char *progname) {
     printf("   T : solve over 0 <= T \n");
     printf("   n : grid points a=x[0], ..., b=x[n]\n");
     printf("   m : time slices 0=t[0], ..., T=t[m]\n");
-
+    exit(EXIT_FAILURE);
 }
 
 static void heat_solve_explicit(struct heat_solve *prob) {
@@ -136,15 +136,12 @@ static void heat_solve_explicit(struct heat_solve *prob) {
         // Boundary Conditions
         u[i][0] = prob->bcL(t);
         u[i][n] = prob->bcR(t);
-        // Compute Ax
+        // Compute Ax+b
         for (int j = 1; j <= n-1; j++) {
             u[i][j] = r*u[i-1][j-1] 
                     + (1-2*r) * u[i-1][j] 
                     + r*u[i-1][j+1];
         }
-        // Compute +b
-        u[i][1]   += r*u[i][0];
-        u[i][n-1] += r*u[i][n];
     }
 }
 
@@ -188,9 +185,8 @@ static void heat_solve_crank_nicolson(struct heat_solve *prob) {
                  + 2*(1-r)*u[i-1][j]
                  + r*u[i-1][j+1];
         }
-        // Requires the boundary from the future i guess?
-        b[1]   += r*u[i][0]+r*prob->bcL(t+dt);
-        b[n-1] += r*u[i][n]+r*prob->bcR(t+dt);
+        b[1]   += r*u[i][0];
+        b[n-1] += r*u[i][n];
         // Fill diagonal
         for (int k = 0; k < n-1; k++) {
             d[k] = 2*(1+r);
@@ -227,12 +223,12 @@ static void heat_solve_seidman_sweep(struct heat_solve *prob) {
     for (int i = 1; i <= m; i++) {
         double t = i*dt;
         // Compute v via a forward sweep for t-dt
+        v[0] = prob->bcL(t-dt/2);
         for (int j = 1; j <= n-1; j++) {
             // Simplified formula
             v[j] = rp*v[j-1] + (1-rp)*u[i-1][j]+rp*u[i-1][j+1];
             v[j] /= (1+rp);
         }
-        v[0] = prob->bcL(t-dt);
         // Fill in the boundary points
         u[i][0] = prob->bcL(t);
         u[i][n] = prob->bcR(t);
