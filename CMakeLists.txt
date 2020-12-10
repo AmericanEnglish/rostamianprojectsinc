@@ -60,8 +60,20 @@ set("DEMOODESRC" "${NNOSRC}" "${XMALLOCSRC}" "${NMEADSRC}" "${ROSTPLOTODESRC}")
 set("DEMOSQSRC" "${NNPSRC}" "${XMALLOCSRC}" "${NMEADSRC}" "${ROSTPLOTPDESRC}") 
 set("DEMOLSRC" "${NNPSRC}" "${XMALLOCSRC}" "${NMEADSRC}" "${ROSTPLOTPDESRC}") 
 
+
+# This downloads the 3d plotters for the rostamian finite difference code
+if (NOT EXISTS "${FD}/plot3d.c")
+    file(DOWNLOAD "https://userpages.umbc.edu/~rostamia/cbook/fd1/plot3d.c" 
+        "${FD}/plot3d.c" SHOW_PROGRESS) 
+endif()
+if (NOT EXISTS "${FD}/plot3d.h")
+    file(DOWNLOAD "https://userpages.umbc.edu/~rostamia/cbook/fd1/plot3d.h" 
+        "${FD}/plot3d.h" SHOW_PROGRESS) 
+endif()
+set("ROSTPLOTFDSRC" "${FD}/plot3d.c")
+
 # The finite difference program 
-set("FDSRC" "${HEATSRC}" "${XMALLOCSRC}")
+set("FDSRC" "${HEATSRC}" "${XMALLOCSRC}" "${ROSTPLOTFDSRC}")
 
 # Header directories
 include_directories("${XMALLOC}" "${ARRAY}" "${VERTS}" "${NMEAD}" "${NNO} ${FD}")
