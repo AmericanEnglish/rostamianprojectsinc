@@ -54,20 +54,19 @@ int main(int argc, char*argv[]) {
     }
     // Get the command line arguments
     struct pme_solve prob = {
-        .a = -1,
-        .b =  1,
-        .T =  T,
-        // and so on
-        .n = n,
-        .m = m,
-        .ic = ic,
+        .a   = -1,
+        .b   =  1,
+        .T   =  T,
+        .n   = n,
+        .m   = m,
+        .ic  = ic,
         .bcL = bc_L,
         .bcR = bc_R,
         .u   = NULL,
-        .exact_sol = exact_sol,
-        .maple_out = NULL,
-        .matlab_out = NULL,
-        .geomview_out = NULL,
+        .exact_sol    = exact_sol,
+        .maple_out    = "pme_demo1.mpl",
+        .matlab_out   = "pme_demo1.m",
+        .geomview_out = "pme_demo1.gv",
     };
     make_matrix(prob.u, m+1, n+1);
     pme_solve(&prob);

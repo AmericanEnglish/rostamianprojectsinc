@@ -12,11 +12,10 @@ struct pme_solve {
     double (*bcR) (double t);
     double **u;
     double (*exact_sol)(double x, double t);
-    //double error;
+    double error;
     char *maple_out;
     char *matlab_out;
     char *geomview_out;
-
 };
 
 void show_usage_and_exit(char *progname);
