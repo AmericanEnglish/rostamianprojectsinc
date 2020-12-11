@@ -4,9 +4,6 @@
 #include "array.h"
 #include "heat-solve.h"
 
-#define PI 4.0*atan(1.0)
-
-// Calculate initial and boundary conditions from the exact solution
 static double ic (double x ){
     return 0;
 }

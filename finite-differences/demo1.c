@@ -78,7 +78,7 @@ int main(int argc, char *argv[]) {
     prob.method       = FD_explicit;
     prob.maple_out    = "prob1_explicit.mpl";
     prob.matlab_out   = "prob1_explicit.m";
-    prob.geomview_out = "prob1_implicit.gv";
+    prob.geomview_out = "prob1_explicit.gv";
     heat_solve(&prob);
     if (prob.exact_sol != NULL) {
         printf("absolute error = %g\n", prob.error);

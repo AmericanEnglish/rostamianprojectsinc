@@ -4,8 +4,6 @@
 #include "array.h"
 #include "heat-solve.h"
 
-#define PI 4.0*atan(1.0)
-
 static double exact_sol(double x, double t) {
     // Demo 2 [-1,1]
     if (t > 0) {
