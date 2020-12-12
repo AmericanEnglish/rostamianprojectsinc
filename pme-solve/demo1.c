@@ -8,15 +8,15 @@
 // Barenblatt's solution
 static double barenblatt(
         double x, double t, double m, double c, double delta) {
-    double alpha = 1/ (m-1);
-    double beta  = 1/ (m+1);
-    double gamma = (m-1)/(2*m*(m+1));
+    double alpha = 1.0/ (m-1.0);
+    double beta  = 1.0/ (m+1.0);
+    double gamma = (m-1.0)/(2.0*m*(m+1.0));
     // An easy drop in to help clean up code
-    double tpd = pow(t + delta, beta);
+    double tplusdelta = pow(t + delta, beta);
     // The piece inside of the max call
-    double mx = c - gamma*pow(x/tpd, 2);
+    double mx = c - gamma*pow(x/tplusdelta, 2);
     // final value
-    double u = (1/tpd)*pow(fmax(mx, 0), alpha);
+    double u = (1/tplusdelta)*pow(fmax(mx, 0), alpha);
     return u;
 }
 
@@ -25,8 +25,8 @@ static double barenblatt(
 static double exact_sol(double x, double t) {
     double c     = sqrt(3)/15;
     double delta = 1.0/75;
-
-    return barenblatt(x, t, 3, c, delta);
+    double m = 3;
+    return barenblatt(x, t, m, c, delta);
 }
 
 static double ic(double x) {

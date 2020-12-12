@@ -5,6 +5,7 @@
 #include "pme-solve.h"
 #include "plot3d.h"
 #include "array.h"
+
 #define phi(x) pow((x), 3)
 
 void show_usage_and_exit(char *progname) {
@@ -22,9 +23,9 @@ static double error_vs_exact(struct pme_solve *prob) {
     int n = prob->n;
     double dt = prob->T / m;
     double dx = (prob->b - prob->a) / n;
-    for (int i = 0; i <= n; i++) {
+    for (int i = 0; i <= m; i++) {
         double t = i*dt;
-        for (int j = 0; j <= m; j++) {
+        for (int j = 0; j <= n; j++) {
             double x = prob->a + j*dx;
             diff = fabs(prob->u[i][j] - prob->exact_sol(x, t));
             if (diff > error) {
@@ -36,9 +37,8 @@ static double error_vs_exact(struct pme_solve *prob) {
 }
 
 static double croot(double k) {
-    double gamma = 108*k+12*sqrt(12+81*pow(k, 2));
-    gamma = pow(gamma, 1.0/3);
-    double eta = gamma/6 - 2/gamma;
+    double gamma = pow((108.0*k + 12*sqrt(12.0+81.0*k*k)), 1.0/3.0);
+    double eta = gamma/6.0 - 2.0/gamma;
     return eta;
 }
 
