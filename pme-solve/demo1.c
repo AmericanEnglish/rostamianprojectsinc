@@ -16,7 +16,7 @@ static double barenblatt(
     // The piece inside of the max call
     double mx = c - gamma*pow(x/tpd, 2);
     // final value
-    double u = tpd*pow(fmax(mx, 0), alpha);
+    double u = (1/tpd)*pow(fmax(mx, 0), alpha);
     return u;
 }
 
@@ -72,6 +72,7 @@ int main(int argc, char*argv[]) {
         .bcL = bc_L,
         .bcR = bc_R,
         .u   = NULL,
+        .error = 0,
         .exact_sol    = exact_sol,
         .maple_out    = "pme_demo1.mpl",
         .matlab_out   = "pme_demo1.m",

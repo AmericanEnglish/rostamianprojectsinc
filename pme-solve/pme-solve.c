@@ -38,7 +38,8 @@ static double error_vs_exact(struct pme_solve *prob) {
 static double croot(double k) {
     double gamma = 108*k+12*sqrt(12+81*pow(k, 2));
     gamma = pow(gamma, 1.0/3);
-    return gamma;
+    double eta = gamma/6 - 2/gamma;
+    return eta;
 }
 
 void pme_solve(struct pme_solve *prob) {
@@ -53,12 +54,12 @@ void pme_solve(struct pme_solve *prob) {
 
     make_vector(v, n+1);
     printf("r = %g\n", r);
-
+    // Initial Condition
     for (int j = 0; j <= n; j++) {
         double x = prob->a + j*dx;
         u[0][j] = prob->ic(x);
     }
-
+    // Time step
     for (int i = 1; i <= m; i++) {
         double t = i*dt;
         // Forward Sweep
@@ -82,6 +83,10 @@ void pme_solve(struct pme_solve *prob) {
         u[i][0] = prob->bcL(t);
     }
     free_vector(v);
+    if (prob->exact_sol != NULL) {
+        prob->error = error_vs_exact(prob);
+        printf("absolute error = %g\n", prob->error);
+    }
     // Plot
     struct plot3d plotter = {
 	.a=prob->a,		// a < x < b
@@ -95,9 +100,5 @@ void pme_solve(struct pme_solve *prob) {
 	.geomview_out = prob->geomview_out	// output file for geomview 
     };
     plot3d(&plotter);
-    // Plot
-    if (prob->exact_sol != NULL) {
-        prob->error = error_vs_exact(prob);
-    }
 }
 
