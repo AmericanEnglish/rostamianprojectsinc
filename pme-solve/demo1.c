@@ -17,6 +17,7 @@ static double barenblatt(
     double mx = c - gamma*pow(x/tpd, 2);
     // final value
     double u = tpd*pow(fmax(mx, 0), alpha);
+    return u;
 }
 
 // pme1: Barenblatt's solution with m = 3, and special choices c and 
@@ -29,15 +30,15 @@ static double exact_sol(double x, double t) {
 }
 
 static double ic(double x) {
-
+    return exact_sol(x, 0);
 }
 
 static double bc_L(double t) {
-
+    return exact_sol(-1, t);
 }
 
 static double bc_R(double t) {
-
+    return exact_sol(1, t);
 }
 
 int main(int argc, char*argv[]) {

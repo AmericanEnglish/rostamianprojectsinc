@@ -18,14 +18,12 @@ void show_usage_and_exit(char *progname) {
 static double error_vs_exact(struct pme_solve *prob) {
     double error = 0;
     double diff  = 0;
-    double t = 0;
-    double x = 0;
     int m = prob->m;
     int n = prob->n;
     double dt = prob->T / m;
     double dx = (prob->b - prob->a) / n;
     for (int i = 0; i <= n; i++) {
-        t = i*dt;
+        double t = i*dt;
         for (int j = 0; j <= m; j++) {
             double x = prob->a + j*dx;
             diff = fabs(prob->u[i][j] - prob->exact_sol(x, t));
