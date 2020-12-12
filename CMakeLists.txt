@@ -25,6 +25,8 @@ set("NNPSRC" "${PROJECT_SOURCE_DIR}/neuralnet-pde/neural-nets-pde.c")
 set("FD"      "${PROJECT_SOURCE_DIR}/finite-differences/")
 set("HEATSRC" "${PROJECT_SOURCE_DIR}/finite-differences/heat-solve.c")
 
+set("PME" "${PROJECT_SOURCE_DIR}/pme-solve/") 
+set("PMESOLVESRC" "${PROJECT_SOURCE_DIR}/pme-solve/pme-solve.c") 
 # The source for these files can be seen here:
 # https://userpages.umbc.edu/~rostamia/cbook/neural-nets-odes.html
 # We will download these right here for completion.
@@ -74,9 +76,13 @@ set("ROSTPLOTFDSRC" "${FD}/plot3d.c")
 
 # The finite difference program 
 set("FDSRC" "${HEATSRC}" "${XMALLOCSRC}" "${ROSTPLOTFDSRC}")
+set("PMESRC" "${PMESOLVESRC}" "${XMALLOCSRC}" "${ROSTPLOTFDSRC}")
 
 # Header directories
-include_directories("${XMALLOC}" "${ARRAY}" "${VERTS}" "${NMEAD}" "${NNO} ${FD}")
+include_directories(
+    "${XMALLOC}" "${ARRAY}" "${VERTS}" 
+    "${NMEAD}"   "${NNO}"   "${FD}"
+    "${PME}")
 
 
 set("CMAKE_C_FLAGS" "-Wall -pedantic -std=c99 -O2")
@@ -94,6 +100,8 @@ add_executable("demo-finite-methods-1" "${FD}/demo1.c" "${FDSRC}")
 add_executable("demo-finite-methods-2" "${FD}/demo2.c" "${FDSRC}")
 add_executable("demo-finite-methods-3" "${FD}/demo3.c" "${FDSRC}")
 add_executable("demo-finite-methods-4" "${FD}/demo4.c" "${FDSRC}")
+add_executable("demo-pme-1" "${PME}/demo1.c" "${PMESRC}")
+add_executable("demo-pme-2" "${PME}/demo2.c" "${PMESRC}")
 
 target_link_libraries("demo-energy" "m")
 target_link_libraries("demo-ode1" "m")
@@ -104,3 +112,5 @@ target_link_libraries("demo-finite-methods-1" "m")
 target_link_libraries("demo-finite-methods-2" "m")
 target_link_libraries("demo-finite-methods-3" "m")
 target_link_libraries("demo-finite-methods-4" "m")
+target_link_libraries("demo-pme-1" "m")
+target_link_libraries("demo-pme-2" "m")
