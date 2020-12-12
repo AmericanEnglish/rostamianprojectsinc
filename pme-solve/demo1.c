@@ -8,7 +8,15 @@
 // Barenblatt's solution
 static double barenblatt(
         double x, double t, double m, double c, double delta) {
-
+    double alpha = 1/ (m-1);
+    double beta  = 1/ (m+1);
+    double gamma = (m-1)/(2*m*(m+1));
+    // An easy drop in to help clean up code
+    double tpd = pow(t + delta, beta);
+    // The piece inside of the max call
+    double mx = c - gamma*pow(x/tpd, 2);
+    // final value
+    double u = tpd*pow(fmax(mx, 0), alpha);
 }
 
 // pme1: Barenblatt's solution with m = 3, and special choices c and 
